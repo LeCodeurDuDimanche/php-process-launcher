@@ -1,0 +1,20 @@
+{
+    "name": "adrien/php-process-launcher",
+    "description": "Simple class to launch Unix processes through shell ; wrapper and utilities around ps_open() function",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Adrien Duval",
+            "email": "adrien.duval.bonnet@gmail.com"
+        }
+    ],
+    "autoload": {
+       "psr-4": {
+           "lecodeurdudimanche\\Processes\\": "src/"
+       }
+   },
+     "require": {
+         "php" : ">7.2"
+     }
+}

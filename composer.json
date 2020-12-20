@@ -1,6 +1,6 @@
 {
     "name": "lecodeurdudimanche/php-process-launcher",
-    "description": "Simple class to launch Unix processes through shell ; wrapper and utilities around ps_open() function",
+    "description": "Simple class to launch Unix processes through shell ; wrapper and utilities around proc_open() function",
     "type": "library",
     "license": "MIT",
     "authors": [

@@ -109,10 +109,10 @@ class Command {
         return $data;
     }
 
-    private static function getSelfAndChildrenOf(int $pid) : array
+    private static function getAllChildrenOf(int $pid) : array
     {
         $res = (new Command("ps --ppid $pid --no-headers -o pid"))->execute()['out'];
-        $pids = [$pid];
+        $pids = [];
 
         if (!trim($res))
             return $pids;
@@ -122,6 +122,13 @@ class Command {
             $pid = intval($pid);
             $pids = array_merge($pids, self::getAllChildrenOf($pid));
         }
+        return $pids;
+    }
+
+    private static function getSelfAndChildrenOf(int $pid) : array
+    {
+        $pids =  self::getAllChildrenOf($pid);
+        array_push($pids, $pid);
         return $pids;
     }
 

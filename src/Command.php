@@ -109,26 +109,21 @@ class Command {
         return $data;
     }
 
-    private static function getAllChildrenOf(int $pid) : array
+    private static function getSelfAndChildrenOf(int $pid) : array
     {
-        $res = (new Command("ps --ppid $pid --no-headers -o pid"))->execute()['out'];
-        $pids = [];
+        $res = (new Command("ps --ppid $pid --no-headers -o pid|tr -s '\n' ' '"))->execute()['out'];
+        $pids = [$pid];
 
         if (!trim($res))
             return $pids;
 
-        foreach(explode($res, ' ') as $pid)
+        foreach(explode(' ', $res) as $pid)
         {
             $pid = intval($pid);
-            $pids = array_merge($pids, self::getAllChildrenOf($pid));
+            if (! $pid)
+                continue;
+            $pids = array_merge($pids, self::getSelfAndChildrenOf($pid));
         }
-        return $pids;
-    }
-
-    private static function getSelfAndChildrenOf(int $pid) : array
-    {
-        $pids =  self::getAllChildrenOf($pid);
-        array_push($pids, $pid);
         return $pids;
     }
 
@@ -160,8 +155,8 @@ class Command {
 
     public function terminate() : int
     {
-        // $this->signalAllChildren(SIGKILL);
-        posix_kill($this->getPID(), SIGKILL);
+        $this->signalAllChildren(SIGKILL);
+        //posix_kill($this->getPID(), SIGKILL);
         return $this->close();
     }
 
